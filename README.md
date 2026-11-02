@@ -43,9 +43,30 @@ Screenshots from the macOS version; the Windows version has the same pages.
 
 ## Download
 
-**Windows**: each push to `windows/` or `assets/` runs the [Windows build workflow](.github/workflows/windows.yml). Open the latest run under **Actions** and download the `DeskPet-windows` artifact, which contains `DeskPet_x.y.z_x64-setup.exe`. It installs for the current user, so no admin rights are needed.
+| Platform | Download | Requirements |
+|---|---|---|
+| **macOS** | [**DeskPet-macOS.zip**](https://github.com/jinfenglin/nightowl-pet/releases/latest/download/DeskPet-macOS.zip) | macOS 14 or later, Apple Silicon (M1 or newer) |
+| **Windows** | [**DeskPet-Windows-setup.exe**](https://github.com/jinfenglin/nightowl-pet/releases/latest/download/DeskPet-Windows-setup.exe) | Windows 10/11, 64-bit |
 
-**macOS**: build from source (below). No signed release yet.
+These links always point to the newest version. Older versions and release notes are on the [Releases page](https://github.com/jinfenglin/nightowl-pet/releases).
+
+**macOS, first launch.** The app isn't notarized by Apple, so macOS blocks it the first time:
+1. Unzip and drag **DeskPet.app** into **Applications**.
+2. Open it. When macOS says it can't verify the app, go to **System Settings → Privacy & Security**, scroll down and click **Open Anyway**.
+   Or run this once in Terminal: `xattr -dr com.apple.quarantine /Applications/DeskPet.app`
+
+DeskPet has no Dock icon: it lives on your desktop and in the menu bar (❤️ HP).
+
+**Windows, first launch.** The installer isn't code-signed, so SmartScreen may show "Windows protected your PC". Click **More info → Run anyway**. It installs for the current user, so no admin rights are needed.
+
+### Publishing a release
+
+Push a version tag and GitHub Actions builds both apps and publishes the release in about 20 minutes:
+```bash
+git tag v0.1.0
+git push origin v0.1.0
+```
+Every push to `main` also builds both apps; those test builds are under **Actions → Build** (run artifacts, kept 90 days).
 
 ## Build from source
 
@@ -73,7 +94,7 @@ The Windows version also runs on macOS for development: `cd windows/src-tauri &&
 assets/defaults/   built-in art shared by both apps: pet/<pose>.png, fx/<effect>.png
 mac/               native macOS app (Swift Package + build_app.sh)
 windows/           Windows app (Tauri: src-tauri/ in Rust, ui/ in plain HTML/CSS/JS)
-.github/workflows/ Windows installer build
+.github/workflows/ builds both apps; publishes releases on version tags
 ```
 
 Both apps use the same data formats: the asset-library layout (`Library/pet/<pose>/`, `Library/fx/<effect>/`), the daily HP file (`hp_history.json`) and the same setting names.

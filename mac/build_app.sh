@@ -14,6 +14,8 @@ swift build -c release --disable-sandbox
 BIN=$(swift build -c release --disable-sandbox --show-bin-path)/DeskPet
 
 APP=DeskPet.app
+VERSION="${VERSION:-0.1.0}"     # CI passes the release tag's version
+BUILD="${BUILD_NUMBER:-1}"
 rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cp "$BIN" "$APP/Contents/MacOS/DeskPet"
@@ -29,8 +31,8 @@ cat > "$APP/Contents/Info.plist" <<PLIST
   <key>CFBundleIdentifier</key><string>com.deskpet.app</string>
   <key>CFBundleExecutable</key><string>DeskPet</string>
   <key>CFBundlePackageType</key><string>APPL</string>
-  <key>CFBundleShortVersionString</key><string>0.1.0</string>
-  <key>CFBundleVersion</key><string>1</string>
+  <key>CFBundleShortVersionString</key><string>$VERSION</string>
+  <key>CFBundleVersion</key><string>$BUILD</string>
   <key>LSMinimumSystemVersion</key><string>14.0</string>
   <key>LSUIElement</key><true/>
   <key>NSHighResolutionCapable</key><true/>

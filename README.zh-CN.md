@@ -43,9 +43,30 @@
 
 ## 下载
 
-**Windows**：每次推送 `windows/` 或 `assets/` 都会运行 [Windows 构建流程](.github/workflows/windows.yml)。在 **Actions** 里打开最近一次运行，下载 `DeskPet-windows`，里面是 `DeskPet_x.y.z_x64-setup.exe`。按当前用户安装，不需要管理员权限。
+| 平台 | 下载 | 系统要求 |
+|---|---|---|
+| **macOS** | [**DeskPet-macOS.zip**](https://github.com/jinfenglin/nightowl-pet/releases/latest/download/DeskPet-macOS.zip) | macOS 14 及以上，Apple 芯片（M1 及更新） |
+| **Windows** | [**DeskPet-Windows-setup.exe**](https://github.com/jinfenglin/nightowl-pet/releases/latest/download/DeskPet-Windows-setup.exe) | Windows 10/11，64 位 |
 
-**macOS**：从源码构建（见下），暂时没有签名的发布版。
+链接始终指向最新版本。历史版本和更新说明见 [Releases 页面](https://github.com/jinfenglin/nightowl-pet/releases)。
+
+**macOS 首次打开。** App 没有经过 Apple 公证，第一次打开会被系统拦下：
+1. 解压后把 **DeskPet.app** 拖进「应用程序」。
+2. 打开它。系统提示无法验证时，去「系统设置 → 隐私与安全性」，往下滚动，点「仍要打开」。
+   也可以在终端运行一次：`xattr -dr com.apple.quarantine /Applications/DeskPet.app`
+
+DeskPet 没有 Dock 图标：它在桌面上，菜单栏会显示 ❤️ HP。
+
+**Windows 首次运行。** 安装包没有代码签名，SmartScreen 可能提示「Windows 已保护你的电脑」，点「更多信息 → 仍要运行」。按当前用户安装，不需要管理员权限。
+
+### 发布新版本
+
+推送一个版本标签，GitHub Actions 会自动编译两个版本并发布 Release，大约 20 分钟：
+```bash
+git tag v0.1.0
+git push origin v0.1.0
+```
+每次推送到 `main` 也会编译两个版本，测试版在 **Actions → Build** 里下载（运行产物，保留 90 天）。
 
 ## 从源码构建
 
@@ -73,7 +94,7 @@ Windows 版也能在 macOS 上运行调试：`cd windows/src-tauri && cargo buil
 assets/defaults/   两个版本共用的内置素材：pet/<状态>.png、fx/<特效>.png
 mac/               macOS 原生版（Swift Package + build_app.sh）
 windows/           Windows 版（Tauri：src-tauri/ 是 Rust，ui/ 是 HTML/CSS/JS）
-.github/workflows/ Windows 安装包构建
+.github/workflows/ 编译两个版本；推送版本标签时发布 Release
 ```
 
 两个版本使用相同的数据格式：素材库结构（`Library/pet/<状态>/`、`Library/fx/<特效>/`）、每日血量文件 `hp_history.json`，设置项名称也相同。

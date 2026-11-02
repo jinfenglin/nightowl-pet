@@ -31,7 +31,7 @@ cargo tauri build    # 生成安装包：target\release\bundle\nsis\DeskPet_0.1.
 
 安装包按「当前用户」安装，不需要管理员权限。
 
-也可以把仓库推到 GitHub：`.github/workflows/windows.yml` 会在 GitHub 的 Windows 机器上自动构建，安装包在该次运行的 Artifacts 里下载。
+也可以直接用 GitHub 构建：`.github/workflows/build.yml` 每次推送都会编译，推送 `v*` 标签时发布到 Releases（见根目录 README 的「下载」）。
 
 ## 在 macOS 上开发调试
 
