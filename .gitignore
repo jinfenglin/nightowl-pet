@@ -1,0 +1,7 @@
+.DS_Store
+# macOS
+mac/.build/
+mac/DeskPet.app/
+# Windows (Tauri)
+windows/src-tauri/target/
+windows/src-tauri/gen/

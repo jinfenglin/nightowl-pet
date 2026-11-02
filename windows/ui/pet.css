@@ -1,0 +1,264 @@
+/* Cindy palette, same as the macOS version: ink black, vivid red, electric blue, gold, paper. */
+:root {
+  --red: #e82129;
+  --red-hot: #ff524d;
+  --blue: #2e6bff;
+  --blue-hot: #73b3ff;
+  --ink: #0a0a0f;
+  --paper: #faf5ed;
+  --gold: #edb840;
+  --rim: linear-gradient(90deg, var(--blue-hot), var(--blue), var(--red), var(--red-hot));
+}
+
+html, body {
+  margin: 0;
+  width: 280px;
+  height: 420px;
+  overflow: hidden;
+  background: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: default;
+  font-family: "Segoe UI", -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+#stage { position: relative; width: 280px; height: 420px; }
+
+/* ---- speech bubble (top, grows downward) ---- */
+.bubble {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%) scale(0.6);
+  max-width: 228px;
+  width: max-content;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 13px;
+  line-height: 1.35;
+  box-shadow: 0 0 0 1.5px rgba(115, 179, 255, 0.55), 0 4px 12px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transition: opacity 0.18s, transform 0.22s cubic-bezier(0.3, 1.6, 0.5, 1);
+  pointer-events: none;
+}
+.bubble.show { opacity: 1; transform: translateX(-50%) scale(1); }
+
+/* ---- storm cloud (lightning) ---- */
+#cloud, #cloud-fallback {
+  position: absolute;
+  left: 30px;
+  top: 104px;
+  width: 220px;
+  height: 92px;
+  object-fit: contain;
+  object-position: center bottom;
+  opacity: 0;
+  transform: translateY(-14px) scale(0.9);
+  transition: opacity 0.5s, transform 0.6s cubic-bezier(0.2, 1.2, 0.4, 1);
+  pointer-events: none;
+}
+#cloud-fallback {
+  border-radius: 46px;
+  background: radial-gradient(ellipse at 50% 60%, #3d3a5c, #16141f 70%);
+  box-shadow: inset 0 -6px 14px rgba(140, 110, 255, 0.45);
+  height: 70px;
+  top: 120px;
+}
+#cloud.show, #cloud-fallback.show { opacity: 1; transform: none; }
+#cloud.lit { filter: brightness(1.8) drop-shadow(0 0 14px rgba(170, 130, 255, 0.95)); }
+
+#bolts { position: absolute; left: 0; top: 0; pointer-events: none; overflow: visible; }
+#bolts polyline {
+  fill: none;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+/* ---- can thrower ---- */
+#thrower {
+  position: absolute;
+  right: 4px;
+  bottom: 28px;
+  height: 96px;
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 0.35s, transform 0.4s;
+  pointer-events: none;
+}
+#thrower.show { opacity: 1; transform: none; }
+
+/* ---- pet + HP bar: the only part that takes the mouse ---- */
+#hit { position: absolute; left: 50px; top: 200px; width: 180px; height: 208px; }
+
+#hp {
+  position: absolute;
+  left: 8px;
+  top: 4px;
+  width: 164px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  pointer-events: none;
+}
+#hp .tag {
+  font-size: 10px;
+  font-weight: 900;
+  color: white;
+  background: var(--red);
+  padding: 1px 4px;
+  border-radius: 4px;
+  box-shadow: 0 0 0 1.5px var(--ink);
+}
+#hp .track {
+  position: relative;
+  flex: 1;
+  height: 10px;
+  border-radius: 6px;
+  background: rgba(10, 10, 15, 0.82);
+  box-shadow: 0 0 0 1.5px var(--ink);
+  overflow: hidden;
+}
+#hp .track::before { /* blue→red rim light */
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 6px;
+  padding: 1px;
+  background: var(--rim);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.9;
+}
+#hp .fill {
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  bottom: 2px;
+  width: calc(100% - 4px);
+  border-radius: 4px;
+  background: linear-gradient(180deg, #ff8a7a, var(--red) 55%, #a8121a);
+  transform-origin: left center;
+  transition: transform 0.35s cubic-bezier(0.3, 1.3, 0.5, 1), background 0.3s;
+}
+#hp .hatch { /* pencil hatching texture */
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.13) 0 1px, transparent 1px 4px);
+}
+#hp.low .fill { animation: pulse 0.9s ease-in-out infinite alternate; }
+@keyframes pulse { to { opacity: 0.45; } }
+#hp .value {
+  min-width: 26px;
+  font-size: 11px;
+  font-weight: 800;
+  color: white;
+  text-shadow: 0 0 2px var(--ink), 0 0 2px var(--ink), 0 0 3px var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+#body { position: absolute; left: 5px; top: 30px; width: 170px; height: 170px; }
+#shadow {
+  position: absolute;
+  left: 30px;
+  bottom: -4px;
+  width: 110px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.32), transparent 70%);
+}
+#breathe {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 100%;
+  animation: breathe 1.8s ease-in-out infinite alternate;
+}
+@keyframes breathe {
+  from { transform: none; }
+  to { transform: translateY(-2px) scale(1.015, 1.035); }
+}
+#sprite {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  filter: drop-shadow(0 0 1.5px rgba(10, 10, 15, 0.7)) drop-shadow(-2px 0 3px rgba(46, 107, 255, 0.35)) drop-shadow(2px 0 3px rgba(232, 33, 41, 0.35));
+  transition: filter 0.25s, transform 0.4s;
+  -webkit-user-drag: none;
+}
+#sprite.flash { filter: brightness(3) !important; transition: none; }
+/* Missing pose art: effects on the full-HP image instead. */
+#sprite.fallback-low { filter: saturate(0.55) brightness(0.92); }
+#sprite.fallback-hurt { filter: sepia(1) saturate(6) hue-rotate(-50deg) brightness(0.95); }
+#sprite.fallback-dead { filter: grayscale(1) brightness(0.8); transform: rotate(-80deg) translateX(-30px); }
+#placeholder {
+  display: none;
+  position: absolute;
+  inset: 20px;
+  border-radius: 50%;
+  background: linear-gradient(#ffd54a, #ff9a2e);
+  font-size: 80px;
+  line-height: 130px;
+  text-align: center;
+}
+
+/* ---- transient effects ---- */
+#fx { position: absolute; inset: 0; pointer-events: none; overflow: visible; }
+.fx { position: absolute; will-change: transform, opacity; }
+
+.number {
+  font-size: 30px;
+  font-weight: 900;
+  font-style: italic;
+  -webkit-text-stroke: 1.5px var(--ink);
+  paint-order: stroke fill;
+  text-shadow: 0 3px 0 var(--ink);
+}
+.number.damage { color: var(--red-hot); }
+.number.big { color: var(--gold); font-size: 38px; }
+.number.heal { color: var(--blue-hot); }
+
+.pow {
+  width: 92px;
+  height: 74px;
+  display: grid;
+  place-items: center;
+  font-size: 24px;
+  font-weight: 900;
+  color: white;
+  -webkit-text-stroke: 1.5px var(--ink);
+  paint-order: stroke fill;
+}
+.pow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(circle, white, var(--c, var(--red)) 70%);
+  clip-path: polygon(50% 0%, 61% 30%, 95% 18%, 72% 44%, 100% 62%, 66% 64%, 74% 100%, 50% 74%, 24% 100%, 32% 66%, 0% 64%, 28% 44%, 4% 18%, 38% 30%);
+  filter: drop-shadow(0 0 0 var(--ink));
+}
+
+.flashlight {
+  position: absolute;
+  border-radius: 50%;
+  mix-blend-mode: screen;
+}
+
+.spark {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 0 6px 2px var(--c, var(--gold));
+}
+
+.hand {
+  font-size: 54px;
+  filter: drop-shadow(0 2px 0 var(--ink));
+}
+.hand img { width: 70px; }
+.can img, .can span { display: block; width: 26px; font-size: 26px; }
