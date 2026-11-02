@@ -4,6 +4,10 @@
 
 [中文说明](README.zh-CN.md)
 
+<p align="center">
+  <img src="docs/screenshots/hero.png" alt="DeskPet idle, struck by lightning for staying up late, and bonked by a soda can for sitting too long" width="100%">
+</p>
+
 | Platform | Status | Tech |
 |---|---|---|
 | **macOS** 14+ | ✅ Full feature set | Swift · SwiftUI · AppKit ([details](mac/README.md), 中文) |
@@ -24,6 +28,18 @@
 - **HP dashboard**: daily minimum HP over the last 30 days.
 - **AI generation**: make the character from a photo and generate the other poses and effect art with OpenAI-compatible image APIs or Google Gemini. Prompts are editable, and there's a "copy prompt" option for using a web app instead.
 - **Config import/export**, **launch at login**, **Chinese / English** UI.
+
+## Screenshots
+
+Screenshots from the macOS version; the Windows version has the same pages.
+
+| Pick an attack effect; its art expands below | Generate the character and effect art with AI |
+|---|---|
+| <img src="docs/screenshots/appearance.png" alt="Appearance settings: attack effect and its art" width="420"> | <img src="docs/screenshots/generate.png" alt="Generate page: AI settings and pet poses" width="420"> |
+
+**HP dashboard**: the lowest HP of each day over the last 30 days (sample data).
+
+<img src="docs/screenshots/dashboard.png" alt="HP dashboard line chart" width="720">
 
 ## Download
 

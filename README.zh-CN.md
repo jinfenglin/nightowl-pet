@@ -4,6 +4,10 @@
 
 [English](README.md)
 
+<p align="center">
+  <img src="docs/screenshots/hero-zh.png" alt="DeskPet 待机、熬夜被雷劈、久坐被易拉罐砸" width="100%">
+</p>
+
 | 平台 | 状态 | 技术 |
 |---|---|---|
 | **macOS** 14+ | ✅ 功能完整 | Swift · SwiftUI · AppKit（[详细说明](mac/README.md)） |
@@ -24,6 +28,18 @@
 - **血量看板**：最近 30 天每天的最低血量。
 - **AI 生成**：从照片生成形象，再生成其他状态图和特效插画；支持 OpenAI 兼容接口和 Google Gemini，提示词可编辑，也能「复制提示词」去网页版生成。
 - **配置导入导出**、**开机启动**、**中文 / English** 界面。
+
+## 截图
+
+以下为 macOS 版截图，Windows 版页面相同。
+
+| 选择攻击特效，下面展开它用到的素材 | 用 AI 生成形象和特效素材 |
+|---|---|
+| <img src="docs/screenshots/appearance-zh.png" alt="形象设置：攻击特效和素材" width="420"> | <img src="docs/screenshots/generate-zh.png" alt="素材生成页：AI 设置和宠物状态图" width="420"> |
+
+**血量看板**：最近 30 天每天的最低血量（示例数据）。
+
+<img src="docs/screenshots/dashboard-zh.png" alt="血量看板折线图" width="720">
 
 ## 下载
 
